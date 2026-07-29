@@ -1,0 +1,22 @@
+<%- include('partials/header') %>
+
+<h1>অনুসন্ধানের ফলাফল<% if (q) { %>: "<%= q %>"<% } %></h1>
+
+<% if (!q) { %>
+  <p class="empty-note">অনুসন্ধান করতে উপরের বক্সে কিছু লিখুন।</p>
+<% } else if (results.length === 0) { %>
+  <p class="empty-note">কোনো ফলাফল পাওয়া যায়নি।</p>
+<% } else { %>
+  <div class="card-grid">
+    <% results.forEach(a => { %>
+      <a class="card" href="/article/<%= a.slug || a.id %>">
+        <span class="card-cat"><%= (categories.find(c=>c.id===a.categoryId)||{}).name || '' %></span>
+        <h3><%= a.title %></h3>
+        <p class="card-author"><%= a.author %></p>
+        <p class="card-abstract"><%= a.abstractEn.slice(0, 160) %><%= a.abstractEn.length > 160 ? '…' : '' %></p>
+      </a>
+    <% }) %>
+  </div>
+<% } %>
+
+<%- include('partials/footer') %>

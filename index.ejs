@@ -1,0 +1,51 @@
+<%- include('partials/admin-header') %>
+
+<h1>সাবমিশন ব্যবস্থাপনা (<%= submissions.length %>)</h1>
+<p class="muted">এখানে ইউজারদের জমা দেওয়া প্রবন্ধ/কনফারেন্স/বই দেখুন এবং প্রতিটির অগ্রগতি (progress) হালনাগাদ করুন। হালনাগাদ করলে গবেষক ইমেইলে (SMTP সেটআপ করা থাকলে) এবং সাইটে "আমার সাবমিশন" পাতায় দেখতে পাবেন।</p>
+
+<% if (submissions.length === 0) { %>
+  <p class="empty-note">এখনো কোনো সাবমিশন আসেনি।</p>
+<% } %>
+
+<% submissions.forEach(s => { %>
+  <div class="submission-card">
+    <div class="submission-head">
+      <div>
+        <h3><%= s.title %></h3>
+        <p class="muted">
+          <%= types.find(t=>t.key===s.type).label_bn %> · <%= s.categoryName %> ·
+          <%= new Date(s.createdAt).toLocaleDateString('bn-BD') %>
+        </p>
+      </div>
+      <span class="status-pill status-<%= s.status %>"><%= statuses.find(st=>st.key===s.status).label_bn %></span>
+    </div>
+
+    <table class="admin-table" style="margin-bottom:12px;">
+      <tr><td class="muted" style="width:160px;">এফিলিয়েশন</td><td><%= s.reader ? s.reader.affiliation : '-' %></td></tr>
+      <tr><td class="muted">ইমেইল</td><td><%= s.reader ? s.reader.email : '-' %></td></tr>
+      <tr><td class="muted">হোয়াটসঅ্যাপ</td><td><%= s.reader ? s.reader.whatsapp : '-' %></td></tr>
+      <% if (s.manuscriptLink) { %>
+      <tr><td class="muted">ম্যানুস্ক্রিপ্ট লিংক</td><td><a href="<%= s.manuscriptLink %>" target="_blank" rel="noopener"><%= s.manuscriptLink %></a></td></tr>
+      <% } %>
+      <% if (s.note) { %>
+      <tr><td class="muted">নোট</td><td><%= s.note %></td></tr>
+      <% } %>
+    </table>
+
+    <form class="inline-form" action="/admin/submissions/<%= s.id %>/status" method="post">
+      <label>নতুন স্ট্যাটাস
+        <select name="status">
+          <% statuses.forEach(st => { %>
+            <option value="<%= st.key %>" <%= s.status === st.key ? 'selected' : '' %>><%= st.label_bn %></option>
+          <% }) %>
+        </select>
+      </label>
+      <label>মন্তব্য (ঐচ্ছিক)
+        <input type="text" name="note" placeholder="গবেষকের জন্য একটি নোট..." />
+      </label>
+      <button type="submit" class="btn btn-primary">হালনাগাদ করুন</button>
+    </form>
+  </div>
+<% }) %>
+
+<%- include('partials/admin-footer') %>

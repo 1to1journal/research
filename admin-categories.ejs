@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+
+<h1><%= type.label_bn %> <span class="label-en">(<%= type.label_en %>)</span></h1>
+
+<div class="chip-row">
+  <a class="chip <%= activeCategory === '' ? 'chip-active' : '' %>" href="/type/<%= type.key %>">সব ক্যাটাগরি</a>
+  <% categories.forEach(c => { %>
+    <a class="chip <%= activeCategory === c.slug ? 'chip-active' : '' %>" href="/type/<%= type.key %>?category=<%= c.slug %>"><%= c.name %></a>
+  <% }) %>
+</div>
+
+<% if (articles.length === 0) { %>
+  <p class="empty-note">এই বিভাগে এখনো কোনো প্রবন্ধ নেই।</p>
+<% } else { %>
+  <div class="card-grid">
+    <% articles.forEach(a => { %>
+      <a class="card" href="/article/<%= a.slug || a.id %>">
+        <span class="card-cat"><%= (categories.find(c=>c.id===a.categoryId)||{}).name || '' %></span>
+        <h3><%= a.title %></h3>
+        <p class="card-author"><%= a.author %></p>
+        <p class="card-abstract"><%= a.abstractEn.slice(0, 160) %><%= a.abstractEn.length > 160 ? '…' : '' %></p>
+      </a>
+    <% }) %>
+  </div>
+<% } %>
+
+<%- include('partials/footer') %>

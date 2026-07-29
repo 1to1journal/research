@@ -1,0 +1,31 @@
+<%- include('partials/admin-header') %>
+
+<a href="/admin/dashboard" class="back-link">← ওভারভিউতে ফিরে যান</a>
+<h1><%= article.title %></h1>
+
+<h2>প্রতিদিনের পঠন সংখ্যা</h2>
+<table class="admin-table">
+  <thead><tr><th>তারিখ</th><th>পঠন সংখ্যা</th></tr></thead>
+  <tbody>
+    <% Object.keys(byDate).sort().reverse().forEach(date => { %>
+      <tr><td><%= date %></td><td><%= byDate[date] %></td></tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<h2>কে কখন পড়েছেন</h2>
+<table class="admin-table">
+  <thead><tr><th>তারিখ</th><th>হোয়াটসঅ্যাপ</th><th>ইমেইল</th><th>এফিলিয়েশন</th></tr></thead>
+  <tbody>
+    <% logs.forEach(l => { %>
+      <tr>
+        <td><%= l.date %></td>
+        <td><%= l.reader ? l.reader.whatsapp : '-' %></td>
+        <td><%= l.reader ? l.reader.email : '-' %></td>
+        <td><%= l.reader ? l.reader.affiliation : '-' %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('partials/admin-footer') %>

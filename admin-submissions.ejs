@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> | <%= siteName %></title>
+  <meta name="description" content="One to One Journal — ISSN <%= issn %>। পিয়ার রিভিউড আর্টিকেল, কনফারেন্স আর্টিকেল ও গবেষণা বই।" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#0f3d3e" />
+  <link rel="icon" href="/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand">
+        <span class="brand-name">One to One Journal</span>
+        <span class="brand-sub">ISSN <%= issn %> · One to One School এর অধিভুক্ত</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="মেনু">☰</button>
+      <nav class="main-nav" id="mainNav">
+        <a href="/">হোম</a>
+        <a href="/type/peer_reviewed">পিয়ার রিভিউড</a>
+        <a href="/type/conference">কনফারেন্স</a>
+        <a href="/type/book">গবেষণা বই</a>
+        <a href="/submit">প্রবন্ধ জমা দিন</a>
+        <a href="/my-submissions">আমার সাবমিশন</a>
+        <form action="/search" method="get" class="nav-search">
+          <input type="text" name="q" placeholder="অনুসন্ধান করুন..." value="<%= typeof q !== 'undefined' ? q : '' %>" />
+          <button type="submit">🔍</button>
+        </form>
+      </nav>
+    </div>
+  </header>
+  <main class="container main-content">
+    <% if (typeof success !== 'undefined' && success.length) { %>
+      <div class="flash flash-success"><%= success.join(', ') %></div>
+    <% } %>
+    <% if (typeof error !== 'undefined' && error.length) { %>
+      <div class="flash flash-error"><%= error.join(', ') %></div>
+    <% } %>

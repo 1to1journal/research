@@ -1,0 +1,32 @@
+<%- include('partials/admin-header') %>
+
+<h1>নিবন্ধিত ইউজার তালিকা (<%= readers.length %>)</h1>
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>হোয়াটসঅ্যাপ নাম্বার</th>
+      <th>ইমেইল</th>
+      <th>এফিলিয়েশন</th>
+      <th>ঠিকানা</th>
+      <th>নিবন্ধনের তারিখ</th>
+      <th>মোট পঠন</th>
+      <th>মোট কমেন্ট</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% readers.forEach(r => { %>
+      <tr>
+        <td><%= r.whatsapp %></td>
+        <td><%= r.email %></td>
+        <td><%= r.affiliation %></td>
+        <td><%= r.address %></td>
+        <td><%= new Date(r.createdAt).toLocaleDateString('bn-BD') %></td>
+        <td><%= r.readCount %></td>
+        <td><%= r.commentCount %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('partials/admin-footer') %>

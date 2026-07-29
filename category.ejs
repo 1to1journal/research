@@ -1,0 +1,91 @@
+<%- include('partials/header') %>
+
+<h1>প্রবন্ধ, কনফারেন্স পেপার বা গবেষণা বই জমা দিন</h1>
+<p class="submit-intro">
+  নিচের ফর্মটি পূরণ করে জমা দিন। এটি সরাসরি জার্নালের ইমেইলে (<strong>onetoonejournal@gmail.com</strong>) চলে যাবে
+  এবং সাথে সাথে আপনার জমাটি সিস্টেমে সংরক্ষিত হবে, যাতে আপনি পরবর্তীতে <a href="/my-submissions">"আমার সাবমিশন"</a>
+  পাতায় গিয়ে অগ্রগতি (progress) দেখতে পারেন। আপনি আগে কোনো প্রবন্ধ পড়ার সময় বা কমেন্ট করার সময় তথ্য দিয়ে থাকলে,
+  এবার আর সেই তথ্য চাওয়া হবে না।
+</p>
+
+<form id="submitForm" class="admin-form">
+  <label>শিরোনাম
+    <input type="text" name="title" required />
+  </label>
+  <div class="form-row">
+    <label>ধরন
+      <select name="type" required>
+        <% types.forEach(t => { %>
+          <option value="<%= t.key %>"><%= t.label_bn %></option>
+        <% }) %>
+      </select>
+    </label>
+    <label>ক্যাটাগরি
+      <select name="categoryId">
+        <option value="">নির্বাচন করুন (ঐচ্ছিক)</option>
+        <% categories.forEach(c => { %>
+          <option value="<%= c.id %>"><%= c.name %></option>
+        <% }) %>
+      </select>
+    </label>
+  </div>
+  <label>ম্যানুস্ক্রিপ্টের Google Drive লিংক (যদি থাকে)
+    <input type="url" name="manuscriptLink" placeholder="https://drive.google.com/..." />
+  </label>
+  <label>সংক্ষিপ্ত নোট / অ্যাবস্ট্র্যাক্ট (ঐচ্ছিক)
+    <textarea name="note" rows="4" placeholder="আপনার লেখা সম্পর্কে সংক্ষেপে লিখুন..."></textarea>
+  </label>
+  <p class="gate-error" id="submitError" style="display:none;"></p>
+  <p class="gate-success" id="submitSuccess" style="display:none;"></p>
+  <button type="submit" class="btn btn-primary">জমা দিন</button>
+</form>
+
+<%- include('partials/gate-modal') %>
+
+<script>
+  const submitForm = document.getElementById("submitForm");
+  const submitError = document.getElementById("submitError");
+  const submitSuccess = document.getElementById("submitSuccess");
+
+  submitForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    submitError.style.display = "none";
+    submitSuccess.style.display = "none";
+
+    const formData = new FormData(submitForm);
+    const fields = Object.fromEntries(formData.entries());
+
+    const doSubmit = (extra) => {
+      const body = new URLSearchParams({ ...fields, ...(extra || {}) });
+      return fetch("/api/submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body,
+      });
+    };
+
+    doSubmit().then(async (res) => {
+      const data = await res.json();
+      if (res.ok) {
+        submitSuccess.textContent = "আপনার সাবমিশন সফলভাবে জমা হয়েছে। 'আমার সাবমিশন' পাতায় গিয়ে অগ্রগতি দেখতে পারবেন।";
+        submitSuccess.style.display = "block";
+        submitForm.reset();
+      } else if (res.status === 400 && /ঘর পূরণ/.test(data.error || "")) {
+        openGate({
+          url: "/api/submissions",
+          extraBody: fields,
+          onSuccess: () => {
+            submitSuccess.textContent = "আপনার সাবমিশন সফলভাবে জমা হয়েছে। 'আমার সাবমিশন' পাতায় গিয়ে অগ্রগতি দেখতে পারবেন।";
+            submitSuccess.style.display = "block";
+            submitForm.reset();
+          },
+        });
+      } else {
+        submitError.textContent = data.error || "একটি সমস্যা হয়েছে, আবার চেষ্টা করুন";
+        submitError.style.display = "block";
+      }
+    });
+  });
+</script>
+
+<%- include('partials/footer') %>

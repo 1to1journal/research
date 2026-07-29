@@ -1,0 +1,64 @@
+<%- include('partials/admin-header') %>
+
+<h1><%= editArticle ? 'প্রবন্ধ সম্পাদনা' : 'নতুন প্রবন্ধ যোগ করুন' %></h1>
+
+<form class="admin-form" action="<%= editArticle ? '/admin/articles/' + editArticle.id : '/admin/articles' %>" method="post">
+  <label>শিরোনাম (Title)
+    <input type="text" name="title" required value="<%= editArticle ? editArticle.title : '' %>" />
+  </label>
+  <label>Abstract (ইংরেজিতে)
+    <textarea name="abstractEn" rows="5" required><%= editArticle ? editArticle.abstractEn : '' %></textarea>
+  </label>
+  <div class="form-row">
+    <label>ধরন
+      <select name="type" required>
+        <% types.forEach(t => { %>
+          <option value="<%= t.key %>" <%= editArticle && editArticle.type === t.key ? 'selected' : '' %>><%= t.label_bn %></option>
+        <% }) %>
+      </select>
+    </label>
+    <label>ক্যাটাগরি
+      <select name="categoryId" required>
+        <% categories.forEach(c => { %>
+          <option value="<%= c.id %>" <%= editArticle && editArticle.categoryId === c.id ? 'selected' : '' %>><%= c.name %></option>
+        <% }) %>
+      </select>
+    </label>
+  </div>
+  <div class="form-row">
+    <label>লেখক
+      <input type="text" name="author" required value="<%= editArticle ? editArticle.author : '' %>" />
+    </label>
+    <label>প্রকাশের তারিখ
+      <input type="date" name="publishedAt" value="<%= editArticle ? editArticle.publishedAt : '' %>" />
+    </label>
+  </div>
+  <label>Google Drive লিংক (সম্পূর্ণ প্রবন্ধ)
+    <input type="url" name="driveLink" required placeholder="https://drive.google.com/..." value="<%= editArticle ? editArticle.driveLink : '' %>" />
+  </label>
+  <button type="submit" class="btn btn-primary"><%= editArticle ? 'হালনাগাদ করুন' : 'যোগ করুন' %></button>
+  <% if (editArticle) { %><a href="/admin/articles" class="btn btn-secondary">বাতিল</a><% } %>
+</form>
+
+<h2>সকল প্রবন্ধ (<%= articles.length %>)</h2>
+<table class="admin-table">
+  <thead><tr><th>শিরোনাম</th><th>ধরন</th><th>ক্যাটাগরি</th><th>তারিখ</th><th></th></tr></thead>
+  <tbody>
+    <% articles.forEach(a => { %>
+      <tr>
+        <td><%= a.title %></td>
+        <td><%= types.find(t=>t.key===a.type).label_bn %></td>
+        <td><%= (categories.find(c=>c.id===a.categoryId)||{}).name || '-' %></td>
+        <td><%= a.publishedAt %></td>
+        <td class="table-actions">
+          <a href="/admin/articles/<%= a.id %>/edit">সম্পাদনা</a>
+          <form action="/admin/articles/<%= a.id %>/delete" method="post" onsubmit="return confirm('প্রবন্ধটি মুছে ফেলতে চান?');">
+            <button type="submit" class="link-danger">মুছুন</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('partials/admin-footer') %>

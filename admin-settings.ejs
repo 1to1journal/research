@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>অ্যাডমিন লগইন | <%= siteName %></title>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="login-body">
+  <div class="login-box">
+    <h1>One to One Journal</h1>
+    <p class="login-sub">অ্যাডমিন লগইন</p>
+    <% if (typeof error !== 'undefined' && error.length) { %>
+      <div class="flash flash-error"><%= error.join(', ') %></div>
+    <% } %>
+    <form action="/admin/login" method="post">
+      <label>ইউজারনেম
+        <input type="text" name="username" required autofocus />
+      </label>
+      <label>পাসওয়ার্ড
+        <input type="password" name="password" required />
+      </label>
+      <button type="submit" class="btn btn-primary">লগইন</button>
+    </form>
+    <a href="/" class="back-link">← সাইটে ফিরে যান</a>
+  </div>
+</body>
+</html>

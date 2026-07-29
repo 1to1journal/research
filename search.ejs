@@ -1,0 +1,40 @@
+<%- include('partials/admin-header') %>
+
+<h1>ওভারভিউ</h1>
+
+<div class="stat-grid">
+  <div class="stat-card"><span class="stat-num"><%= totalArticles %></span><span>মোট প্রবন্ধ</span></div>
+  <div class="stat-card"><span class="stat-num"><%= totalReaders %></span><span>নিবন্ধিত পাঠক</span></div>
+  <div class="stat-card"><span class="stat-num"><%= totalReads %></span><span>মোট পঠন</span></div>
+  <div class="stat-card"><span class="stat-num"><%= totalComments %></span><span>মোট কমেন্ট</span></div>
+</div>
+
+<h2>প্রবন্ধ অনুযায়ী পঠন পরিসংখ্যান</h2>
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>শিরোনাম</th>
+      <th>ধরন</th>
+      <th>ক্যাটাগরি</th>
+      <th>আজকের পঠন</th>
+      <th>মোট পঠন</th>
+      <th>কমেন্ট</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% articleStats.forEach(a => { %>
+      <tr>
+        <td><%= a.title %></td>
+        <td><%= types.find(t=>t.key===a.type).label_bn %></td>
+        <td><%= a.categoryName %></td>
+        <td><%= a.reads.today %></td>
+        <td><%= a.reads.total %></td>
+        <td><%= a.commentCount %></td>
+        <td><a href="/admin/analytics/<%= a.id %>">বিস্তারিত →</a></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('partials/admin-footer') %>

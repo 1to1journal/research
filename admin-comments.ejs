@@ -1,0 +1,23 @@
+<div class="modal-overlay" id="gateOverlay">
+  <div class="modal-box">
+    <button class="modal-close" id="gateClose" aria-label="বন্ধ করুন">✕</button>
+    <h3>প্রবেশ করুন</h3>
+    <p class="modal-note">সম্পূর্ণ প্রবন্ধ পড়তে অথবা কমেন্ট করতে নিচের তথ্য দিন। একবার দিলে পরবর্তীতে আর চাওয়া হবে না, শুধু "প্রবেশ" বাটনে ক্লিক করলেই চলবে।</p>
+    <form id="gateForm">
+      <label>হোয়াটসঅ্যাপ নাম্বার
+        <input type="text" name="whatsapp" required placeholder="01XXXXXXXXX" />
+      </label>
+      <label>বর্তমান ঠিকানা
+        <input type="text" name="address" required placeholder="যেমন: ঢাকা, বাংলাদেশ" />
+      </label>
+      <label>এফিলিয়েশন (প্রতিষ্ঠান)
+        <input type="text" name="affiliation" required placeholder="আপনার প্রতিষ্ঠানের নাম" />
+      </label>
+      <label>ইমেইল
+        <input type="email" name="email" required placeholder="you@example.com" />
+      </label>
+      <p class="gate-error" id="gateError" style="display:none;"></p>
+      <button type="submit" class="btn btn-primary">প্রবেশ</button>
+    </form>
+  </div>
+</div>

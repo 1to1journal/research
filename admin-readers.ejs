@@ -1,0 +1,45 @@
+<%- include('partials/header') %>
+
+<article class="article-page">
+  <div class="breadcrumb">
+    <a href="/type/<%= article.type %>"><%= types.find(t=>t.key===article.type).label_bn %></a> ›
+    <a href="/category/<%= category ? category.slug : '' %>"><%= category ? category.name : '' %></a>
+  </div>
+
+  <h1><%= article.title %></h1>
+  <p class="article-meta"><%= article.author %> · <%= article.publishedAt %></p>
+
+  <h2 class="section-label">Abstract</h2>
+  <p class="abstract-text"><%= article.abstractEn %></p>
+
+  <div class="access-box">
+    <p>সম্পূর্ণ প্রবন্ধটি Google Drive-এ সংরক্ষিত আছে। পড়তে নিচের বাটনে ক্লিক করুন।</p>
+    <button class="btn btn-primary" id="seeMoreBtn" data-article="<%= article.id %>">
+      সম্পূর্ণ প্রবন্ধ পড়ুন (See More)
+    </button>
+  </div>
+
+  <section class="comments-section">
+    <h2>কমেন্টসমূহ (<%= comments.length %>)</h2>
+
+    <form id="commentForm" data-article="<%= article.id %>">
+      <textarea name="content" rows="3" placeholder="আপনার মন্তব্য লিখুন..." required></textarea>
+      <p class="gate-error" id="commentError" style="display:none;"></p>
+      <button type="submit" class="btn btn-secondary">কমেন্ট করুন</button>
+    </form>
+
+    <ul class="comment-list" id="commentList">
+      <% comments.forEach(c => { %>
+        <li class="comment-item">
+          <strong><%= c.readerName %></strong>
+          <span class="comment-date"><%= new Date(c.createdAt).toLocaleDateString('bn-BD') %></span>
+          <p><%= c.content %></p>
+        </li>
+      <% }) %>
+    </ul>
+  </section>
+</article>
+
+<%- include('partials/gate-modal') %>
+
+<%- include('partials/footer') %>

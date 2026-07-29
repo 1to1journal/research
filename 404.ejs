@@ -1,0 +1,34 @@
+<%- include('partials/header') %>
+
+<section class="categories-strip">
+  <div class="chip-row">
+    <% categories.forEach(c => { %>
+      <a class="chip" href="/category/<%= c.slug %>"><%= c.name %></a>
+    <% }) %>
+  </div>
+</section>
+
+<% types.forEach(t => { %>
+  <section class="type-section">
+    <div class="section-head">
+      <h2><%= t.label_bn %> <span class="label-en">(<%= t.label_en %>)</span></h2>
+      <a class="see-all" href="/type/<%= t.key %>">সবগুলো দেখুন →</a>
+    </div>
+    <% if (byType[t.key].length === 0) { %>
+      <p class="empty-note">এখনো কোনো প্রবন্ধ যোগ করা হয়নি।</p>
+    <% } else { %>
+      <div class="card-grid">
+        <% byType[t.key].forEach(a => { %>
+          <a class="card" href="/article/<%= a.slug || a.id %>">
+            <span class="card-cat"><%= (categories.find(c=>c.id===a.categoryId)||{}).name || '' %></span>
+            <h3><%= a.title %></h3>
+            <p class="card-author"><%= a.author %></p>
+            <p class="card-abstract"><%= a.abstractEn.slice(0, 140) %><%= a.abstractEn.length > 140 ? '…' : '' %></p>
+          </a>
+        <% }) %>
+      </div>
+    <% } %>
+  </section>
+<% }) %>
+
+<%- include('partials/footer') %>

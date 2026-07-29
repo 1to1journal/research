@@ -1,0 +1,18 @@
+<%- include('partials/admin-header') %>
+
+<h1>সেটিংস</h1>
+
+<form class="admin-form" action="/admin/settings" method="post">
+  <label>ইউজারনেম
+    <input type="text" name="username" value="<%= username %>" required />
+  </label>
+  <label>বর্তমান পাসওয়ার্ড
+    <input type="password" name="currentPassword" required />
+  </label>
+  <label>নতুন পাসওয়ার্ড (পরিবর্তন না করতে চাইলে খালি রাখুন)
+    <input type="password" name="newPassword" />
+  </label>
+  <button type="submit" class="btn btn-primary">সংরক্ষণ করুন</button>
+</form>
+
+<%- include('partials/admin-footer') %>

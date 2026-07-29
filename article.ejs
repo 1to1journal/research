@@ -1,0 +1,33 @@
+<%- include('partials/admin-header') %>
+
+<h1>প্রবন্ধ অনুযায়ী কমেন্ট</h1>
+
+<% if (grouped.length === 0) { %>
+  <p class="empty-note">এখনো কোনো কমেন্ট নেই।</p>
+<% } %>
+
+<% grouped.forEach(g => { %>
+  <div class="comment-group">
+    <h2><%= g.article.title %> <span class="muted">(<%= g.comments.length %>)</span></h2>
+    <table class="admin-table">
+      <thead><tr><th>মন্তব্য</th><th>ইমেইল</th><th>এফিলিয়েশন</th><th>তারিখ</th><th></th></tr></thead>
+      <tbody>
+        <% g.comments.forEach(c => { %>
+          <tr>
+            <td><%= c.content %></td>
+            <td><%= c.reader ? c.reader.email : '-' %></td>
+            <td><%= c.reader ? c.reader.affiliation : '-' %></td>
+            <td><%= new Date(c.createdAt).toLocaleDateString('bn-BD') %></td>
+            <td>
+              <form action="/admin/comments/<%= c.id %>/delete" method="post" onsubmit="return confirm('কমেন্টটি মুছে ফেলতে চান?');">
+                <button type="submit" class="link-danger">মুছুন</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+<% }) %>
+
+<%- include('partials/admin-footer') %>

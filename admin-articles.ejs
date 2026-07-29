@@ -1,0 +1,20 @@
+<%- include('partials/header') %>
+
+<h1><%= category.name %></h1>
+
+<% if (articles.length === 0) { %>
+  <p class="empty-note">এই ক্যাটাগরিতে এখনো কোনো প্রবন্ধ নেই।</p>
+<% } else { %>
+  <div class="card-grid">
+    <% articles.forEach(a => { %>
+      <a class="card" href="/article/<%= a.slug || a.id %>">
+        <span class="card-cat"><%= types.find(t=>t.key===a.type).label_bn %></span>
+        <h3><%= a.title %></h3>
+        <p class="card-author"><%= a.author %></p>
+        <p class="card-abstract"><%= a.abstractEn.slice(0, 160) %><%= a.abstractEn.length > 160 ? '…' : '' %></p>
+      </a>
+    <% }) %>
+  </div>
+<% } %>
+
+<%- include('partials/footer') %>
